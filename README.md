@@ -12,6 +12,20 @@ A high-performance, secure, and modern full-stack blogging platform. This applic
 
 ---
 
+---
+
+## 🚀 Live Deployment
+
+The application is fully deployed and accessible online. It utilizes a multi-cloud architecture for optimal performance:
+
+*   **🌐 Live Demo (Frontend):** [https://blogging-platform-fullstack-client.vercel.app/](https://blogging-platform-fullstack-client.vercel.app/)
+*   **⚙️ API Server (Backend):** [Hosted on Render](https://blogging-platform-fullstack-6iw9.onrender.com/api/posts)
+*   **🗄️ Database:** MySQL hosted on Railway
+
+*(Note: Since the backend is hosted on Render's free tier, the API may take 30-50 seconds to spin up if it hasn't received traffic recently. Please be patient on the initial load!)*
+
+---
+
 ## 🌟 Key Features
 
 ### 🔐 Security & Auth
