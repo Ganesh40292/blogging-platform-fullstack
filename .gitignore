@@ -1,0 +1,27 @@
+# Dependencies
+node_modules/
+client/node_modules/
+server/blogging-platform/target/
+
+# Build
+dist/
+client/dist/
+*.jar
+*.war
+
+# Environment
+.env
+.env.local
+*.local
+
+# Logs
+*.log
+npm-debug.log*
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
