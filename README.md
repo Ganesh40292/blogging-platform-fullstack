@@ -278,8 +278,8 @@ If you found this project helpful, please give it a **Star** 🌟 on GitHub!
 
 **Author**: Ganesh Prasad
 **Email**: ganeshprasadnayak292@gmail.com
-**GitHub**: [github.com/your-username](https://github.com/Ganesh40292)
-**LinkedIn**: [linkedin.com/in/your-profile](www.linkedin.com/in/ganeshprasad40292)
+**GitHub**: https://github.com/Ganesh40292
+**LinkedIn**: www.linkedin.com/in/ganeshprasad40292
 
 ---
 *Built with ❤️ for the Developer Community.*
