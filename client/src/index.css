@@ -743,3 +743,17 @@ button.danger:hover {
   justify-content: space-between;
   align-items: center;
 }
+
+/* ================= POST CONTENT WRAPPING ================= */
+.post-content {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+}
+
+.post-content p {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  line-height: 1.6;
+}
