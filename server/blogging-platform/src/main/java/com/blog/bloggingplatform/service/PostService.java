@@ -15,10 +15,30 @@ public class PostService {
     @Autowired
     private PostRepository postRepository;
 
+    @Autowired
+    private com.blog.bloggingplatform.repository.PostLikeRepository postLikeRepository;
+
     // CREATE
     public Post createPost(Post post, User user) {
         post.setUser(user);
         return postRepository.save(post);
+    }
+
+    // TOGGLE LIKE
+    public Post toggleLike(Long postId, User user) {
+        Post post = getPostById(postId);
+        java.util.Optional<com.blog.bloggingplatform.model.PostLike> existingLike =
+                postLikeRepository.findByPostIdAndUserId(postId, user.getId());
+
+        if (existingLike.isPresent()) {
+            postLikeRepository.delete(existingLike.get());
+        } else {
+            com.blog.bloggingplatform.model.PostLike newLike = new com.blog.bloggingplatform.model.PostLike();
+            newLike.setPost(post);
+            newLike.setUser(user);
+            postLikeRepository.save(newLike);
+        }
+        return getPostById(postId);
     }
 
     // GET ALL
@@ -45,8 +65,16 @@ public class PostService {
 
         existing.setTitle(updatedPost.getTitle());
         existing.setContent(updatedPost.getContent());
+        existing.setCategory(updatedPost.getCategory());
+        existing.setTags(updatedPost.getTags());
+        existing.setImageUrl(updatedPost.getImageUrl());
 
         return postRepository.save(existing);
+    }
+
+    // SEARCH & PAGINATED
+    public org.springframework.data.domain.Page<Post> searchPosts(String search, String category, Long authorId, org.springframework.data.domain.Pageable pageable) {
+        return postRepository.searchPosts(search, category, authorId, pageable);
     }
 
     // DELETE

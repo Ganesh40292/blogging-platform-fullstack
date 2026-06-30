@@ -32,17 +32,20 @@ public class PostController {
     // ============================================
     @PostMapping
     public ResponseEntity<?> createPost(@RequestBody Post post) {
-
+        User user;
         try {
-            User user = (User) SecurityContextHolder
+            user = (User) SecurityContextHolder
                     .getContext()
                     .getAuthentication()
                     .getPrincipal();
-
-            return ResponseEntity.ok(postService.createPost(post, user));
-
         } catch (Exception e) {
-            return ResponseEntity.status(401).body("Unauthorized");
+            return ResponseEntity.status(401).body("Unauthorized: Please log in");
+        }
+
+        try {
+            return ResponseEntity.ok(postService.createPost(post, user));
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error creating post: " + e.getMessage());
         }
     }
 
@@ -50,8 +53,43 @@ public class PostController {
     // ✅ GET ALL POSTS
     // ============================================
     @GetMapping
-    public ResponseEntity<List<Post>> getAllPosts() {
-        return ResponseEntity.ok(postService.getAllPosts());
+    public ResponseEntity<?> getAllPosts(
+            @org.springframework.web.bind.annotation.RequestParam(required = false) String search,
+            @org.springframework.web.bind.annotation.RequestParam(required = false) String category,
+            @org.springframework.web.bind.annotation.RequestParam(required = false) Long authorId,
+            @org.springframework.web.bind.annotation.RequestParam(defaultValue = "0") int page,
+            @org.springframework.web.bind.annotation.RequestParam(defaultValue = "10") int size,
+            @org.springframework.web.bind.annotation.RequestParam(defaultValue = "createdAt") String sortBy,
+            @org.springframework.web.bind.annotation.RequestParam(defaultValue = "desc") String direction) {
+
+        org.springframework.data.domain.Sort sort = direction.equalsIgnoreCase("desc")
+                ? org.springframework.data.domain.Sort.by(sortBy).descending()
+                : org.springframework.data.domain.Sort.by(sortBy).ascending();
+
+        org.springframework.data.domain.Pageable pageable = org.springframework.data.domain.PageRequest.of(page, size, sort);
+        return ResponseEntity.ok(postService.searchPosts(search, category, authorId, pageable));
+    }
+
+    // ============================================
+    // ✅ LIKE/UNLIKE POST
+    // ============================================
+    @PostMapping("/{id}/like")
+    public ResponseEntity<?> toggleLike(@PathVariable Long id) {
+        User user;
+        try {
+            user = (User) SecurityContextHolder
+                    .getContext()
+                    .getAuthentication()
+                    .getPrincipal();
+        } catch (Exception e) {
+            return ResponseEntity.status(401).body("Unauthorized: Please log in");
+        }
+
+        try {
+            return ResponseEntity.ok(postService.toggleLike(id, user));
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error toggling like: " + e.getMessage());
+        }
     }
 
     // ============================================
@@ -68,17 +106,20 @@ public class PostController {
     @PutMapping("/{id}")
     public ResponseEntity<?> updatePost(@PathVariable Long id,
                                         @RequestBody Post post) {
-
+        User user;
         try {
-            User user = (User) SecurityContextHolder
+            user = (User) SecurityContextHolder
                     .getContext()
                     .getAuthentication()
                     .getPrincipal();
-
-            return ResponseEntity.ok(postService.updatePost(id, post, user));
-
         } catch (Exception e) {
-            return ResponseEntity.status(401).body("Unauthorized");
+            return ResponseEntity.status(401).body("Unauthorized: Please log in");
+        }
+
+        try {
+            return ResponseEntity.ok(postService.updatePost(id, post, user));
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error updating post: " + e.getMessage());
         }
     }
 
@@ -87,19 +128,21 @@ public class PostController {
     // ============================================
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deletePost(@PathVariable Long id) {
-
+        User user;
         try {
-            User user = (User) SecurityContextHolder
+            user = (User) SecurityContextHolder
                     .getContext()
                     .getAuthentication()
                     .getPrincipal();
-
-            postService.deletePost(id, user);
-
-            return ResponseEntity.ok("Post deleted successfully");
-
         } catch (Exception e) {
-            return ResponseEntity.status(401).body("Unauthorized");
+            return ResponseEntity.status(401).body("Unauthorized: Please log in");
+        }
+
+        try {
+            postService.deletePost(id, user);
+            return ResponseEntity.ok("Post deleted successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error deleting post: " + e.getMessage());
         }
     }
 }

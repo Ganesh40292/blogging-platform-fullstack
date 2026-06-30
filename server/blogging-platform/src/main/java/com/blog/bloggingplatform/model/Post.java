@@ -43,14 +43,21 @@ public class Post {
     @Column(columnDefinition = "MEDIUMTEXT")
     private String imageUrl; // 🔥 Stores Base64 Image Data Directly
 
+    private String category;
+    private String tags;
+
     private LocalDateTime createdAt = LocalDateTime.now();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    @JsonIgnoreProperties({"posts", "comments", "password"})
+    @JsonIgnoreProperties({"posts", "comments", "password", "followers", "following"})
     private User user;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties({"post"})
     private List<Comment> comments;
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties({"post"})
+    private List<PostLike> likes = new java.util.ArrayList<>();
 }

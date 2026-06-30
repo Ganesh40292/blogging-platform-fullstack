@@ -15,7 +15,7 @@ const API = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
-  timeout: 15000,
+  timeout: 60000, // Increased to 60s for Render cold-starts
 });
 
 // ============================================
@@ -102,8 +102,8 @@ const handleRequest = async (requestPromise) => {
 // 📝 POSTS APIs
 // ============================================
 // 🔥 FIX: Removed leading slashes so they append to BASE_URL correctly
-export const getPosts = () =>
-  handleRequest(API.get("posts"));
+export const getPosts = (params) =>
+  handleRequest(API.get("posts", { params }));
 
 export const getPostById = (id) =>
   handleRequest(API.get(`posts/${id}`));
@@ -116,6 +116,15 @@ export const updatePost = (id, data) =>
 
 export const deletePost = (id) =>
   handleRequest(API.delete(`posts/${id}`));
+
+export const toggleLikePost = (id) =>
+  handleRequest(API.post(`posts/${id}/like`));
+
+export const toggleFollowUser = (id) =>
+  handleRequest(API.post(`users/${id}/follow`));
+
+export const getUserFollowStats = (id) =>
+  handleRequest(API.get(`users/${id}/stats`));
 
 // ============================================
 // 💬 COMMENTS APIs

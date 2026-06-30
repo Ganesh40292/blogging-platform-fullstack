@@ -21,6 +21,9 @@ CREATE TABLE post (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
     content TEXT NOT NULL,
+    category VARCHAR(100),
+    tags VARCHAR(255),
+    image_url MEDIUMTEXT,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
 
     user_id BIGINT NOT NULL,
@@ -50,6 +53,31 @@ CREATE TABLE comment (
     FOREIGN KEY (post_id)
     REFERENCES post(id)
     ON DELETE CASCADE
+);
+
+-- ===============================
+-- POST LIKE TABLE
+-- ===============================
+CREATE TABLE post_like (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT NOT NULL,
+    post_id BIGINT NOT NULL,
+
+    CONSTRAINT fk_like_user FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE,
+    CONSTRAINT fk_like_post FOREIGN KEY (post_id) REFERENCES post(id) ON DELETE CASCADE,
+    CONSTRAINT uq_user_post UNIQUE (user_id, post_id)
+);
+
+-- ===============================
+-- USER FOLLOWS TABLE
+-- ===============================
+CREATE TABLE user_follows (
+    follower_id BIGINT NOT NULL,
+    followed_id BIGINT NOT NULL,
+
+    PRIMARY KEY (follower_id, followed_id),
+    CONSTRAINT fk_follows_follower FOREIGN KEY (follower_id) REFERENCES user(id) ON DELETE CASCADE,
+    CONSTRAINT fk_follows_followed FOREIGN KEY (followed_id) REFERENCES user(id) ON DELETE CASCADE
 );
 
 -- Insert user (password should be BCrypt in real app)

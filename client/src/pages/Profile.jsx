@@ -1,22 +1,23 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
-import { getPosts } from "../services/api";
+import { getPosts, getUserFollowStats } from "../services/api";
 import PostCard from "../components/PostCard";
 import { motion } from "framer-motion";
-import { FaUserCircle, FaEnvelope, FaCalendarAlt, FaPenNib } from "react-icons/fa";
+import { FaUserCircle, FaEnvelope, FaCalendarAlt, FaPenNib, FaUserPlus, FaUserCheck } from "react-icons/fa";
 
 function Profile() {
   const { user } = useAuth();
   const [userPosts, setUserPosts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [followStats, setFollowStats] = useState({ followersCount: 0, followingCount: 0 });
 
   // 🔄 Define fetch function so it can be passed as a refresh prop
   const fetchUserPosts = async () => {
     try {
       setLoading(true);
-      const res = await getPosts();
-      const filtered = res.data.filter(post => post.user?.id === user?.id);
-      setUserPosts(filtered);
+      const res = await getPosts({ authorId: user.id }); // Fetch posts by authorId efficiently from backend
+      const data = res.data?.content || (Array.isArray(res.data) ? res.data : []);
+      setUserPosts(data);
     } catch (err) {
       console.error("Error fetching user posts:", err);
     } finally {
@@ -24,8 +25,21 @@ function Profile() {
     }
   };
 
+  const fetchFollowStats = async () => {
+    if (!user) return;
+    try {
+      const statsRes = await getUserFollowStats(user.id);
+      setFollowStats(statsRes.data);
+    } catch (err) {
+      console.error("Error fetching user follow stats:", err);
+    }
+  };
+
   useEffect(() => {
-    if (user) fetchUserPosts();
+    if (user) {
+      fetchUserPosts();
+      fetchFollowStats();
+    }
   }, [user]);
 
   if (!user) return <div className="container"><p>Please login to view your profile.</p></div>;
@@ -55,8 +69,12 @@ function Profile() {
             <span>Posts</span>
           </div>
           <div className="stat-item">
-            <h3>0</h3>
+            <h3>{followStats.followersCount}</h3>
             <span>Followers</span>
+          </div>
+          <div className="stat-item">
+            <h3>{followStats.followingCount}</h3>
+            <span>Following</span>
           </div>
         </div>
       </motion.div>
