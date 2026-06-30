@@ -12,6 +12,20 @@ A high-performance, secure, and modern full-stack blogging platform. This applic
 
 ---
 
+---
+
+## 🚀 Live Deployment
+
+The application is fully deployed and accessible online. It utilizes a multi-cloud architecture for optimal performance:
+
+*   **🌐 Live Demo (Frontend):** [https://blogging-platform-fullstack-client.vercel.app/](https://blogging-platform-fullstack-client.vercel.app/)
+*   **⚙️ API Server (Backend):** [Hosted on Render](https://blogging-platform-fullstack-6iw9.onrender.com/api/posts)
+*   **🗄️ Database:** MySQL hosted on Railway
+
+*(Note: Since the backend is hosted on Render's free tier, the API may take 30-50 seconds to spin up if it hasn't received traffic recently. Please be patient on the initial load!)*
+
+---
+
 ## 🌟 Key Features
 
 ### 🔐 Security & Auth
@@ -262,10 +276,10 @@ Distributed under the MIT License. See `LICENSE` for more information.
 ## ⭐ Support & Contact
 If you found this project helpful, please give it a **Star** 🌟 on GitHub!
 
-**Author**: [Your Name]
-**Email**: [Your Email]
-**GitHub**: [github.com/your-username](https://github.com/your-username)
-**LinkedIn**: [linkedin.com/in/your-profile](https://linkedin.com/in/your-profile)
+**Author**: Ganesh Prasad
+**Email**: ganeshprasadnayak292@gmail.com
+**GitHub**: https://github.com/Ganesh40292
+**LinkedIn**: www.linkedin.com/in/ganeshprasad40292
 
 ---
 *Built with ❤️ for the Developer Community.*
