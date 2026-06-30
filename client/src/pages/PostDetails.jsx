@@ -183,7 +183,9 @@ function PostDetails() {
         {/* 🔥 Full HTML Content Render */}
         <div 
           className="post-content"
-          dangerouslySetInnerHTML={{ __html: post.content }}
+          dangerouslySetInnerHTML={{ 
+            __html: post.content ? post.content.replace(/&nbsp;|\u00a0/g, " ") : "" 
+          }}
         />
 
         <div className="post-footer-details" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '15px', marginTop: '30px' }}>

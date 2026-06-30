@@ -93,7 +93,9 @@ function PostCard({ post, refresh }) {
       {/* 🔥 Render HTML Content from Quill */}
       <div 
         className="post-content"
-        dangerouslySetInnerHTML={{ __html: truncateText(post.content || "", 120) }}
+        dangerouslySetInnerHTML={{ 
+          __html: truncateText(post.content || "", 120).replace(/&nbsp;|\u00a0/g, " ") 
+        }}
       />
 
       <div className="card-footer">
